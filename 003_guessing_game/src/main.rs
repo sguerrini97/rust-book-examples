@@ -15,8 +15,10 @@ fn main() {
 
     println!("read_line() result: {:?}", result);
 
-    result
+    let expect_result = result
         .expect("Failed to read line");
+
+    println!("expect_result (usize): {:?}", expect_result);
 
     println!("You guessed: {}", guess);
 }
