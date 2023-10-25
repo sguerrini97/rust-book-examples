@@ -1,24 +1,51 @@
 use std::io::{self, Write};
+use std::cmp::Ordering;
+use rand::Rng;
 
 fn main() {
     println!("Guess the number!");
 
-    // If we use print! instead of println!, the cursor stays on the same line ...
-    print!("Please input your guess: ");
-    // ... but we have to flush the buffer manually to ensure the output is displayed immediately.
-    io::stdout().flush().expect("Failed to flush");
+    // 
+    let secret_number = rand::thread_rng()
+        .gen_range(1..=100);
 
-    let mut guess = String::with_capacity(6);
+    // println!("The secret number is: {}", secret_number);
 
-    let result = io::stdin()
-        .read_line(&mut guess);
+    loop {
+        // If we use print! instead of println!, the cursor stays on the same line ...
+        print!("Please input your guess: ");
+        // ... but we have to flush the buffer manually to ensure the output is displayed immediately.
+        io::stdout().flush().expect("Failed to flush");
 
-    println!("read_line() result: {:?}", result);
+        let mut guess = String::with_capacity(6);
 
-    let expect_result = result
-        .expect("Failed to read line");
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
 
-    println!("expect_result (usize): {:?}", expect_result);
+        let guess: u32 = match guess.trim().parse() {
+            Ok(size) => {
+                size
+            },
+            Err(_) => {
+                println!("Invalid input, please enter a number!");
+                continue;
+            }
+        };
 
-    println!("You guessed: {}", guess);
+        println!("You guessed: {}", guess);
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => {
+                println!("Too small!");
+            },
+            Ordering::Greater => {
+                println!("Too big!");
+            },
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            },
+        }
+    }
 }
