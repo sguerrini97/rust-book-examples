@@ -23,6 +23,7 @@ fn main() {
             .read_line(&mut guess)
             .expect("Failed to read line");
 
+        // Parsing error handling. Reusing the guess variable name will shadow the previous variable.
         let guess: u32 = match guess.trim().parse() {
             Ok(size) => {
                 size
@@ -35,6 +36,7 @@ fn main() {
 
         println!("You guessed: {}", guess);
 
+        // Compare the guess to the secret number
         match guess.cmp(&secret_number) {
             Ordering::Less => {
                 println!("Too small!");
