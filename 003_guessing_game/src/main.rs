@@ -10,8 +10,12 @@ fn main() {
 
     let mut guess = String::with_capacity(6);
 
-    io::stdin()
-        .read_line(&mut guess)
+    let result = io::stdin()
+        .read_line(&mut guess);
+
+    println!("read_line() result: {:?}", result);
+
+    result
         .expect("Failed to read line");
 
     println!("You guessed: {}", guess);
